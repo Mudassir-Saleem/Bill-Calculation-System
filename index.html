@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Calculation</title>
+</head>
+<style>
+    body {
+        background-color: blue;
+    }
+
+    .one {
+        text-align: center;
+        margin-left:2px;
+        /* margin-bottom: ; */
+    text-shadow: 12px;
+    text-shadow: blue;
+    background-color: white;
+    border: 12px solid darkgrey;
+    padding: 12px 8px;
+    }
+
+
+    .two {
+        /* margin-left: 82px; */
+        background-color: pur;
+        margin-left: 63px;
+        border: 12px solid darkgrey ;
+        background-color: white;
+        padding: 22px 22px;
+        
+        
+
+    }
+
+    .three {
+        text-align: center;
+
+        border: 13px solid  darkgrey;
+        background-color: white;
+        padding: 2px 102px;
+        margin-left: 12px;
+    }
+    
+
+    .b1 {
+        background-color: purle;
+        padding: 8px 12px;
+    }
+
+    .b2 {
+        /* background-color: gay; */
+        padding: 8px 12px;
+    }
+    .i1
+    {
+        width: 186px;
+        height: 26px;
+    }
+    .four
+    {
+        display: flex;
+    }
+    #cart
+    {
+        height: 282px;
+        /* margin-bottom: 33px; */
+        border: 13px solid darkgrey;
+        padding: px 27px;
+        background-color: white;
+        margin-left: 12px;
+    } 
+    #cart h1
+    {
+text-align: center;
+    }
+    #cart h6
+    {
+text-align: center;
+    }
+    
+    #cart p
+    {
+text-align: center;
+    }
+    
+</style>
+
+<body>
+    <h2 class="one">Bill Calculation System</h2>
+    <div class="four">
+
+        <section class="two">
+            
+        <form id="billForm">
+            <!-- <label for="customerId">Customer ID:</label> -->
+            <!-- <input class="i1" type="text" id="customerId" required><br><br> -->
+
+          <label for="customerName"> Customer Name:</label><br>
+            <input  class="i1" type="text" id="customerName" required><br><br>
+            
+            <label for="itemName">Item Name:</label> <br>
+            <input  class="i1" type="text" id="itemName"><br><br>
+
+            <label for="itemPrice">Item Price:</label><br>
+            <input  class="i1" type="number" id="itemPrice" min="1"><br><br>
+
+            <button type="button" class="b1" onclick="addItem()">Add Item in CarT</button><br><br>
+            <button type="button" class="b2" onclick="calculateBill()">Calculate Final Bill</button>
+       
+        </form>
+        
+    </section>
+
+    <section>
+
+        <div id="cart">
+            <h1>Added Cart item's</h1>
+          <h6>  ID &nbsp; &nbsp; &nbsp; &nbsp;   Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Price <br> ------------------------------------------</h6>
+          
+          
+          
+            <ol id="itemList" ></ol>
+        </div>
+        
+    </section>
+    
+    <section class="three">
+        <h1> Paying Bill Details</h1>
+          
+        
+        <div id="billDetails" style="display: none;">
+            <p id="datetime"></p>
+         
+            <!-- <p id="customerIdResult"></p> -->
+            <p id="customerNameResult"></p>
+            <p id="totalAmount"></p>
+            <p id="tax"></p>
+            <p id="total"></p>
+            <!-- <h2>Current Date and Time is:</h2> -->
+            
+            
+        </div>
+        
+    </section>
+</div>
+    <script>
+
+
+
+        let cart = [];
+
+        function addItem() {
+            const itemName = document.getElementById('itemName').value;
+            const itemPrice = parseFloat(document.getElementById('itemPrice').value);
+
+            if (itemName && itemPrice) {
+               
+                cart.push({ name: itemName, price: itemPrice });
+                displayCart();
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemPrice').value = '';
+            } else {
+                alert('Please enter both item name and price.');
+            }
+        }
+
+        function displayCart() {
+         
+
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            // let index=0;
+            cart.forEach(item => {
+                // console.log(id);
+                const li = document.createElement('li');
+                
+                li.textContent =  `  ${item.name}            ${item.price}`;
+                itemList.appendChild(li);
+            });
+        }
+
+        function calculateBill() {
+            // const customerId = document.getElementById('customerId').value;
+            const customerName = document.getElementById('customerName').value;
+
+            if (customerName && cart.length > 0) {
+                let totalAmount = 0;
+                cart.forEach(item => {
+                    totalAmount += item.price;
+                });
+
+                const tax = totalAmount * 0.1; // Assuming tax rate is 10%
+
+                // document.getElementById('customerIdResult').textContent = 'Customer ID: ' + customerId;
+                document.getElementById('customerNameResult').textContent = 'Customer Name: ' + customerName;
+                document.getElementById('totalAmount').textContent = ' Amount: $' + totalAmount.toFixed(2);
+                document.getElementById('tax').textContent = 'Tax: $' + tax.toFixed(2);
+
+                const total = totalAmount + tax;
+                // let total=22;
+
+                document.getElementById('total').textContent = 'Total Amount: $'  + total;
+
+                const currentDate = new Date();
+
+                // Format the date and time
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+                const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+                // Display the formatted date and time
+            
+                document.getElementById('datetime').textContent  =  'Current Date and Time: ' + formattedDate;
+
+                document.getElementById('billDetails').style.display = 'block';
+
+            }
+            else 
+            {
+
+                alert('Please fill in all fields and add items to the cart.');
+            }
+        }
+    </script>
+</body>
+
+</html>
